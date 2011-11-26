@@ -1,0 +1,8 @@
+Deﬁne a procedure that takes three numbers as arguments and returns the sum of the squares of the two larger numbers.
+
+(defn sum-of-squares-of-two-biggest-numbers
+  "returns the sum of the squares of the two biggest arguments of the first three provided"
+  [& [a b c :as all]]
+  (let [[_ second-biggest biggest] (sort all)
+        square #(* % %)]
+    (+ (square biggest) (square second-biggest))))
