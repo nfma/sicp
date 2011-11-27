@@ -1,0 +1,20 @@
+Ben Bitdiddle has invented a test to determine whether the interpreter he is faced with is using applicative-order evaluation or normal-order evaluation. He deﬁnes the following two procedures:
+(defn p [] (p))
+
+(defn test [x y] (if (= x 0) 0 y))
+
+Then he evaluates the expression:
+(test 0 (p))
+
+What behavior will Ben observe with an interpreter that uses
+applicative-order evaluation? What behavior will he observe with
+an interpreter that uses normal-order evaluation? Explain your
+answer. (Assume that the evaluation rule for the special form if
+is the same whether the interpreter is using normal or applicative
+order: The predicate expression is evaluated ﬁrst, and the result
+determines whether to evaluate the consequent or the alternative
+expression.)
+
+With applicative-order evaluation, Ben will get a StackOverflowError, whilst with normal-order he would have gotten the answer 0.
+In the application-order the arguments are evaluated before the whole expression gets evaluated. So p will be recursively called until the call stack gets full.
+In the normal-order the expression gets expanded first and it's only evaluated after the whole expansion is finished, because the call to p is in a branch of the if that is out of reach, it's possible to escape the recursive calls to p and prevent the call stack from getting full.
