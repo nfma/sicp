@@ -1,0 +1,61 @@
+The good-enough? test used in computing square roots will not be very effective for ﬁnding the square roots of very small numbers. Also, in real computers, arithmetic operations are almost always performed with limited precision. This makes our test inadequate for very large numbers. Explain these statements, with examples showing how the test fails for small and large numbers. An alternative strategy for implementing good-enough? is to watch how guess changes from one iteration to the next and to stop when the change is a very small fraction of the guess. Design a square-root procedure that uses this kind of end test. Does this work better for small and large numbers?
+
+> (sqrt 0.00004)
+0.03167509508023218
+
+The reason for this is that the x is not the dominant value anymore.
+
+without recur
+> (sqrt 1000000000000000000000M)
+StackOverflowError
+
+Scheme has CPO and clojure doesn't.
+
+with recur
+> (sqrt 1000000000000000000000M)
+gets stuck in an infinite loop
+
+Because of the huge difference between x and the guess, when calculating the average, it stabilises in a number that is never under the accepted range (0.001).
+
+> (defn good-enough? [guess last-guess] 
+    (< (Math/abs (- guess last-guess)) 
+       0.001))
+#'user/good-enough?
+
+> (defn average [x y] 
+    (/ (+ x y) 2))
+#'user/average
+
+> (defn improve [guess x] 
+    (average guess (/ x guess)))
+#'user/improve
+
+> (defn sqrt-iter [guess last-guess x] 
+    (if (good-enough? guess last-guess) 
+      guess 
+      (recur (improve guess x) guess x)))
+#'user/sqrt-iter
+
+> (defn sqrt [x] 
+    (sqrt-iter 1.0 0.0 x))
+#'user/sqrt
+
+> (sqrt 9)
+3.000000001396984
+
+For normal numbers there's no notible difference
+
+> (sqrt 0.0001)
+0.010000714038711746
+
+This result seems much more reliable
+
+> (sqrt 0.000001)
+0.0012961915927068783
+
+It looks like we are in the right path
+
+> (sqrt 1000000000000000000000M)
+3.1622776601683792E10
+
+Also this doesn't get stuck anymore and gives a more or less reliable number.
