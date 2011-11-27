@@ -43,7 +43,7 @@ Because of the huge difference between x and the guess, when calculating the ave
 > (sqrt 9)
 3.000000001396984
 
-For normal numbers there's no notible difference
+For normal numbers there's no noticeable difference
 
 > (sqrt 0.0001)
 0.010000714038711746
