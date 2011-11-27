@@ -1,0 +1,9 @@
+Observe that our model of evaluation allows for combinations whose operators are compound expressions.
+Use this observation to describe the behavior of the following procedure:
+
+(defn a-plus-abs-b [a b]
+  ((if (> b 0)
+     +
+     -) a b))
+
+as the name of the function states, this will add to a the absolute value of b.
