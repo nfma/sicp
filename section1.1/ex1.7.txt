@@ -9,7 +9,7 @@ without recur
 > (sqrt 1000000000000000000000M)
 StackOverflowError
 
-Scheme has CPO and clojure doesn't.
+Scheme has TCO and clojure doesn't.
 
 with recur
 > (sqrt 1000000000000000000000M)
