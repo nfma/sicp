@@ -1,0 +1,55 @@
+The following procedure computes a mathematical function called Ackermann’s function.
+
+(defn A [x y]
+  (cond
+    (= y 0) 0
+    (= x 0) (* 2 y)
+    (= y 1) 2
+    :else (A (dec x) (A x (dec y)))))
+
+What are the values of the following expressions?
+
+> (A 1 10)
+1024
+
+> (A 2 4)
+65536 
+
+> (A 3 3)
+65536
+
+Consider the following procedures, where A is the procedure deﬁned above:
+(defn f [n] 
+  (A 0 n))
+
+(defn g [n]
+  (A 1 n))
+
+(defn h [n]
+  (A 2 n))
+
+(defn k [n]
+  (* 5 n n))
+
+Give concise mathematical deﬁnitions for the functions computed
+by the procedures f, g, and h for positive integer values of n. For
+example, (k n) computes 5n2
+
+(f n) computes 2y
+
+(g n) computes 0, n = 0 and 2^n, n >= 1
+thought process:
+when n = 0 => (A 1 0) that's case 1 of the cond, which is 0
+when n >= 0 => (A 1 n) = (A 0 (A 1 (- n 1))) = (A 0 (A 0 (- n 2))) = ...
+if we start from the bottom then:
+(A 1 1) = 2, n = 1
+(A 0 (A 1 1)) = 4, n = 2
+(A 0 (A 0 (A 1 1))) = 8, n = 3
+We can see a pattern here: the result doubles every iteration, so we expect a exponental function with base 2, and power of the base is simply n.
+
+(h n) computes 0, n = 0,1 and  2^(2^2^...^2), the number of power of twos doubles everytime so 2^(n - 2) times because it starts at n=2, n >= 2
+though process, similar to the above:
+(A 2 1) = 0, n = 1
+(A 2 2) = 4 = 2^2, n = 2, which means 1 power of 2
+(A 2 3) = 16 = 2^2^2, n = 3, which means 2 powers of 2
+(A 2 4) = 65536 = 2^2^2^2^2, n = 4, which means 4 powers of 2
