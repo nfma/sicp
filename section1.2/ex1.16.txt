@@ -6,8 +6,8 @@ In general, the technique of deﬁning an invariant quantity that remains unchan
 
 (defn iter-exp [b n]
   (loop [b b n n a 1]
-    (if (= 1 n)
+    (if (= 0 n)
       a
       (if (even? n)
-        (recur b (/ n 2) (* a (* b b)))
+        (recur (* b b) (/ n 2) a)
         (recur b (dec n) (* a b))))))
