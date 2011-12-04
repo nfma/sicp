@@ -10,7 +10,6 @@ The numbers at the edge of the triangle are all 1, and each number inside the tr
 Write a procedure that computes elements of Pascal’s triangle by means of a recursive process.
 
 (defn bin-coef [n]
-  (cond
-    (= n 1) '(1)
-    (= n 2) '(1 1)
-    :else (flatten [1  (map + (bin-coef (dec n)) (rest (bin-coef (dec n)))) 1])))
+  (if (= n 0) 
+    '(1)
+    (flatten [1  (map + (bin-coef (dec n)) (rest (bin-coef (dec n)))) 1])))
