@@ -9,7 +9,7 @@ Is this expectation conﬁrmed? If not, what is the observed ratio of the speeds
 (defn next [n]
   (if (= n 2)
     3
-    (inc (inc n))))
+    (+ n 2)))
 
 (defn find-divisor [n test-divisor]
   (cond 
@@ -18,27 +18,27 @@ Is this expectation conﬁrmed? If not, what is the observed ratio of the speeds
     :else (find-divisor n (next test-divisor))))
 
 (search-for-primes 1000)
-0.017 msecs
+0.199 msecs
 (1009 1013 1019)
 
 (search-for-primes 10000)
-0.015 msecs
+0.256 msecs
 (10007 10009 10037)
 
 (search-for-primes 100000)
-0.017 msecs
+0.389 msecs
 (100003 100019 100043)
 
 (search-for-primes 1000000)
-0.015 msecs
+0.448 msecs
 (1000003 1000033 1000037)
 
 (search-for-primes 10000000)
-0.015 msecs
+1.264 msecs
 (10000019 10000079 10000103)
 
 (search-for-primes 100000000)
-0.016 msecs
+1.768 msecs
 (100000007 100000037 100000039)
 
-I see no difference, I think the problem is that the differences in the algorith are too small, we are only running the prime test, a very small number of times more.
+No, it's not confirmed. Probable from around 10-50 % faster. The change would never produce a program 2x faster unless all the other code was run in 0ms. As this is not the case, the improvement is just the result of the impact of doubling the speed of this part of the program.

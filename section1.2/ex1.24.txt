@@ -29,35 +29,35 @@ Do your data bear this out? Can you explain any discrepancy you ﬁnd?
     (map #(when (fast-prime? % 12) %) (iterate inc n))))
 
 (search-for-primes 1000)
-0.016 msecs
+0.366 msecs
 (1009 1013 1019)
 
 (search-for-primes 10000)
-0.015 msecs
+0.553 msecs
 (10007 10009 10037)
 
 (search-for-primes 100000)
-0.016 msecs
+0.648 msecs
 (100003 100019 100043)
 
 (search-for-primes 1000000)
-0.015 msecs
+0.608 msecs
 (1000003 1000033 1000037)
 
 (search-for-primes 10000000)
-0.017 msecs
+0.508 msecs
 (10000019 10000079 10000103)
 
 (search-for-primes 100000000)
-0.016 msecs
+0.843 msecs
 (100000007 100000037 100000039)
 
 (search-for-primes 1000000000)
-0.016 msecs
+0.831 msecs
 (1000000007 1000000009 1000000021)
 
 (search-for-primes 1000000000)
-0.016 msecs
+0.586 msecs
 (1000000007 1000000009 1000000021)
 
-I'm starting to get suspicious that the values are removed from a cache :P
+The difference is very low, and the time is much more instable, there are more high and low peaks. This means that the number of times that the fermat-test is used to verify if a number is prime has some influence in the overall time. Also, the number of numbers it needs to go has an impact.

@@ -26,31 +26,31 @@ Going to ignore the above procedure as clojure already has the time macro.
 (defn prime? [n]
   (= n (smallest-divisor n)))
 
-(defn search-for-primes [n]
-  (time (take 3 (all-primes-starting-at n))))
-
 (defn all-primes-starting-at [n]
   (filter #(not (nil? %))
     (map #(when (prime? %) %) (iterate inc n))))
 
+(defn search-for-primes [n]
+  (time (doall (take 3 (all-primes-starting-at n))))) ;take is lazy, we need to force it otherwise time would not time
+
 (search-for-primes 1000)
-0.015 msecs
+0.299 msecs
 (1009 1013 1019)
 
 (search-for-primes 10000)
-0.017 msecs
+0.521 msecs
 (10007 10009 10037)
 
 (search-for-primes 100000)
-0.016 msecs
+0.67 msecs
 (100003 100019 100043)
 
 (search-for-primes 1000000)
-0.016 msecs
+0.757 msecs
 (1000003 1000033 1000037)
 
 (search-for-primes 10000000)
-0.015 msecs
+2.164 msecs
 (10000019 10000079 10000103)
 
-Not really, but this only works as long as numbers are within 32/64 bits (computers are optimised for that). After that we should see this kind of growth.
+Not very well. For instance sqrt 10000 is 100, and the sqrt of 1.000.000 is 1000, so the computation for the latter should be 10x slower than the former, which is not the case. Even when the latter computation had to compute more than the double of the elements. I think the answer to this is that there are other operations that are more dominant which influences the result of the timings.
