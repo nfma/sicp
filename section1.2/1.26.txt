@@ -1,0 +1,17 @@
+Louis Reasoner is having great difﬁculty doing Exercise 1.24. His fast-prime? test seems to run more slowly than his prime? test. Louis calls his friend Eva Lu Ator over to help.
+When they examine Louis’s code, they ﬁnd that he has rewritten the expmod procedure to use an explicit multiplication, rather than calling square:
+
+(defn expmod [base exp m]
+  (cond
+   (= exp 0)
+     1
+  (even? exp)
+    (rem (* (expmod base (/ exp 2) m) (expmod base (/ exp 2) m)) m)
+  :else
+    (rem (* base (expmod base (dec exp) m)) m)))
+
+“I don’t see what difference that could make,” says Louis. “I do.” says Eva. “By writing the procedure like that, you have transformed the O(log n) process into a O(n) process.” Explain.
+
+The square function evaluated the (expmod base (/ exp 2) m) expression only once, and then squared its value, whilst this function calls the given expression twice, given that this is a
+recursive function it will evaluate two times more than necessary, and because the original function halved the calls and this doubles, it cancels the number of calls out and so the process
+becames O(n).

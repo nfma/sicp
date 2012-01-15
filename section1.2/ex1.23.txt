@@ -1,0 +1,44 @@
+The smallest-divisor procedure shown at the start of this section does lots of needless testing: After it checks to see if the number is divisible by 2 there is no point in checking to
+see if it is divisible by any larger even numbers. This suggests that the values used for test-divisor should not be 2, 3, 4, 5, 6, . . ., but rather 2, 3, 5, 7, 9, . . ..
+To implement this change, deﬁne a procedure next that returns 3 if its input is equal to 2 and otherwise returns its input plus 2. Modify the smallest-divisor procedure
+to use (next test-divisor) instead of (+ test-divisor 1).
+With timed-prime-test incorporating this modiﬁed version of smallest-divisor, run the test for each of the 12 primes found in Exercise 1.22. Since this modiﬁcation halves the number of
+test steps, you should expect it to run about twice as fast.
+Is this expectation conﬁrmed? If not, what is the observed ratio of the speeds of the two algorithms, and how do you explain the fact that it is different from 2?
+
+(defn next [n]
+  (if (= n 2)
+    3
+    (inc (inc n))))
+
+(defn find-divisor [n test-divisor]
+  (cond 
+    (> (* test-divisor test-divisor) n) n
+    (divides? test-divisor n) test-divisor
+    :else (find-divisor n (next test-divisor))))
+
+(search-for-primes 1000)
+0.017 msecs
+(1009 1013 1019)
+
+(search-for-primes 10000)
+0.015 msecs
+(10007 10009 10037)
+
+(search-for-primes 100000)
+0.017 msecs
+(100003 100019 100043)
+
+(search-for-primes 1000000)
+0.015 msecs
+(1000003 1000033 1000037)
+
+(search-for-primes 10000000)
+0.015 msecs
+(10000019 10000079 10000103)
+
+(search-for-primes 100000000)
+0.016 msecs
+(100000007 100000037 100000039)
+
+I see no difference, I think the problem is that the differences in the algorith are too small, we are only running the prime test, a very small number of times more.

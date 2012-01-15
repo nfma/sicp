@@ -1,0 +1,63 @@
+Modify the timed-prime-test procedure of Exercise 1.22 to use fast-prime? (the Fermat method), and test each of the 12 primes you found in that exercise.
+Since the Fermat test has O(log n) growth, how would you expect the time to test primes near 1,000,000 to compare with the time needed to test primes near 1000? 
+Do your data bear this out? Can you explain any discrepancy you ﬁnd?
+
+(defn square [n]
+  (* n n))
+
+(defn expmod [base exp m]
+  (cond
+    (= exp 0)
+      1
+    (even? exp)
+      (rem (square (expmod base (/ exp 2) m)) m)
+    :else
+      (rem (* base (expmod base (- exp 1) m)) m)))
+
+(defn fermat-test [n]
+  (let [a (inc (int (* (Math/random) (dec n))))]
+    (= (expmod a n n) a)))
+
+(defn fast-prime? [n times]
+  (cond
+    (= times 0) true
+    (fermat-test n) (recur n (- times 1))
+    :else false))
+
+(defn all-primes-starting-at [n]
+  (filter #(not (nil? %))
+    (map #(when (fast-prime? % 12) %) (iterate inc n))))
+
+(search-for-primes 1000)
+0.016 msecs
+(1009 1013 1019)
+
+(search-for-primes 10000)
+0.015 msecs
+(10007 10009 10037)
+
+(search-for-primes 100000)
+0.016 msecs
+(100003 100019 100043)
+
+(search-for-primes 1000000)
+0.015 msecs
+(1000003 1000033 1000037)
+
+(search-for-primes 10000000)
+0.017 msecs
+(10000019 10000079 10000103)
+
+(search-for-primes 100000000)
+0.016 msecs
+(100000007 100000037 100000039)
+
+(search-for-primes 1000000000)
+0.016 msecs
+(1000000007 1000000009 1000000021)
+
+(search-for-primes 1000000000)
+0.016 msecs
+(1000000007 1000000009 1000000021)
+
+I'm starting to get suspicious that the values are removed from a cache :P
