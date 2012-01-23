@@ -1,0 +1,21 @@
+Suppose we deﬁne the procedure
+
+(defn f [g]
+  (g 2))
+
+Then we have
+(f square)
+4
+
+(f (fn [z] (* z (+ z 1))))
+6
+
+What happens if we (perversely) ask the interpreter to evaluate the combination
+(f f)? Explain.
+
+expanding:
+(f f)
+
+(f 2)
+
+(2 2) -> error because 2 is not a function

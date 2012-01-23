@@ -1,0 +1,35 @@
+Simpson’s Rule is a more accurate method of numerical integration than the method illustrated above.
+Using Simpson’s Rule, the integral of a function f between a and b is approximated as
+h/3 (y0 + 4y1 + 2y2 + 4y3 + 2y4 + . . . + 2yn-2 + 4yn-1 + yn)
+where h = (b - a)/n, for some even integer n, and yk = f (a + kh).
+
+(Increasing n increases the accuracy of the approximation.) Deﬁne a procedure that takes as arguments 
+f, a, b, and n and returns the value of the integral, computed using Simpson’s Rule.
+Use your procedure to integrate cube between 0 and 1 (with n = 100 and n = 1000), and compare the 
+results to those of the integral procedure shown above.
+
+(defn h [a b n] 
+  (/ (- b a) n))
+
+(defn y [f a b n k] 
+  (let [h* (memoize h)
+        f* (memoize f)]
+    (f* (+ a (* k (h* a b n))))))
+
+(defn simp [f a b n] 
+  (* (/ (h a b n) 3) 
+     (loop [i 1 res (y f a b n 0)] 
+       (if (= i n)
+         (+ res (y f a b n n))
+         (recur 
+           (inc i) 
+           (+ res (let [r (y f a b n i)] 
+                    (if (odd? i) 
+                      (* 4 r) 
+                      (* 2 r)))))))))
+
+(simp #(* % % %) 0 1 100)
+1/4
+
+(simp #(* % % %) 0 1 1000)
+1/4

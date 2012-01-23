@@ -1,0 +1,23 @@
+A continued fraction representation of the tangent function was published in 
+1770 by the German mathematician J.H. Lambert:
+
+tan x = x / (1 - (x^2 / (3 - (x^2 / (5 - ... 
+
+where x is in radians. Deﬁne a procedure (tan-cf x k) that computes an 
+approximation to the tangent function based on Lambert’s formula. 
+k speciﬁes the number of terms to compute, as in Exercise 1.37.
+
+(defn cont-frac [n d k]
+  (letfn [(acc [n d k result]
+            (println result)
+            (if (= 1 k)
+              (- 1 result)
+              (recur n d (dec k) (/ (n k) (- (d k) result)))))]
+    (acc n d k 0)))
+
+(defn tan-cf [x k]
+  (/ x 
+    (cont-frac
+      (fn [_] (* x x))
+      (fn [i] (dec (* 2 i)))
+      k)))

@@ -1,0 +1,16 @@
+Deﬁne a procedure cubic that can be used together with the newtons-method 
+procedure in expressions of the form (newtons-method (cubic a b c) 1)
+to approximate zeros of the cubic x^3 + ax^2 + bx + c.
+
+(defn deriv [g]
+  (let [dx 0.00001]
+    #(/ (- (g (+ % dx)) (g %)) dx)))
+
+(defn newton-transform [g]
+  #(- % (/ (g %) ((deriv g) %))))
+
+(defn newtons-method [g guess]
+  (fixed-point (newton-transform g) guess))
+
+(defn cubic [a b c]
+  #(+ (* % % %) (* a % %) (* b %) c))
