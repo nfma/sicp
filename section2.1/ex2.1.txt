@@ -1,0 +1,16 @@
+Deﬁne a better version of make-rat that handles both positive and negative 
+arguments. Make-rat should normalize the sign so that if the rational number
+is positive, both the numerator and denominator are positive, and if the 
+rational number is negative, only the numerator is negative.
+
+(defn gcd [a b]
+  (if (zero? b)
+    a
+    (recur b (rem a b))))
+
+(defn make-rat [n d]
+  (let [g (gcd n d)
+        m (if (> (* n d) 0)
+              1
+              -1)]
+    [(* m (/ (Math/abs n) g)) (/ (Math/abs d) g)]))
