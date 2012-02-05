@@ -1,0 +1,16 @@
+Deﬁne a constructor make-center-percent that takes a center and a percentage
+tolerance and produces the desired interval. You must also deﬁne a selector
+percent that produces the percentage tolerance for a given interval. The center
+selector is the same as the one shown above.
+
+(defn make-center-percent [c p]
+  (let [w (/ (* c p) 100)]
+    [(- c w) (+ c w)]))
+
+(defn center [[s e]]
+  (let [t (/ (- e s) 2)]
+    (+ s t)))
+
+(defn percent [[s e :as i]]
+  (let [c (center i)]
+    (/ (* (- e c) 100) c)))

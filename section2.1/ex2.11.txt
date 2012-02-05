@@ -1,0 +1,32 @@
+In passing, Ben also cryptically comments: “By testing the signs of the
+endpoints of the intervals, it is possible to break mul-interval into nine
+cases, only one of which requires more than two multiplications.” 
+Rewrite this procedure using Ben’s suggestion.
+
+(defn mul-interval [x y]
+  (let [x1 (lower-bound x)
+        x2 (upper-bound x)
+        y1 (lower-bound y)
+        y2 (upper-bound y)]
+    (if (and (> x2 0) (> y2 0))
+      (if (< x1 0)
+        (if (< y1 0)
+          (make-interval (Math/min (* x1 y2) (* x2 y1)) 
+                         (Math/max (* x2 y2) (* x1 y1)))
+          (make-interval (* x1 y2) (* x2 y2)))
+        (if (< y1 0)
+          (make-interval (* x2 y1) (* x2 y2))
+          (make-interval (* x1 y1) (* x2 y2))))
+      (cond
+        (and (< x2 0) (< y2 0))
+          (make-interval (* x2 y2) (* x1 y1))
+        (< x1 0)
+          (if (< y1 0)
+            (make-interval (* x1 y2) (* x1 y1))
+            (make-interval (* x1 y2) (* x2 y1)))
+        :else
+          (if (< x1 0)
+            (make-interval (* x2 y1) (* x1 y1))
+            (make-interval (* x2 y1) (* x1 y2)))))))
+
+; this crap is hard to test...

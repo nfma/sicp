@@ -1,0 +1,49 @@
+Demonstrate that Lem is right. Investigate the behavior of the system on a
+variety of arithmetic expressions. Make some intervals A and B, and use them in
+computing the expressions A/A and A/B. You will get the most insight by using
+intervals whose width is a small percentage of the center value. Examine the
+results of the computation in center-percent form (see Ex. 2.12).
+
+(defn add-interval [x y]
+  (make-interval
+    (+ (lower-bound x) (lower-bound y))
+    (+ (upper-bound x) (upper-bound y))))
+
+(defn par1 [r1 r2]
+  (div-interval (mul-interval r1 r2)
+                (add-interval r1 r2)))
+
+(defn par2 [r1 r2]
+  (let [one (make-interval 1 1)]
+    (div-interval one
+                  (add-interval (div-interval one r1)
+                  (div-interval one r2)))))
+
+(par1 [2 3] [4 5])
+[1.0 2.5]
+
+(par2 [2 3] [4 5])
+[1.3333333333333333 1.875]
+
+A = [1000 1001]
+B = [10000 10001]
+
+A/A = [0.999000999000999 1.0010000000000001]
+
+A/B = [0.09999000099990002 0.10010000000000001]
+
+A = [10000 10001]
+B = [1000 1001]
+
+A/A = [0.9999000099990002 1.0001]
+
+A/B = [9.99000999000999 10.001]
+
+(center (div-interval [1000 1001] [1000 1001]))
+1.0000004995004996
+
+(percent (div-interval [1000 1001] [1000 1001]))
+0.09995000002497335
+
+Lem is right and we can see that to get from par1 to par2 we assume that A/A is center 1 with percentage 0 but in practice that's not what happens.
+This is the reason why even though they are algebricaly equivalent, they give different results.

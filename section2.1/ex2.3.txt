@@ -15,7 +15,6 @@ using either representation?
     (Math/sqrt (+ (* dx dx) (* dy dy)))))
 
 ; rectangle
-; caveat i'm not verifying that this two segments actually make a rectangle
 (defn mk-rect [s1 s2]
   [s1 s2])
 

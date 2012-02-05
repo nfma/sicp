@@ -1,0 +1,85 @@
+In case representing pairs as procedures wasn’t mindboggling enough, consider
+that, in a language that can manipulate procedures, we can get by without
+numbers (at least insofar as nonnegative integers are concerned) by
+implementing 0 and the operation of adding 1 as:
+
+(def zero 
+  (fn [f] 
+    (fn [x] x)))
+
+(defn add-1 [n]
+  (fn [f] 
+    (fn [x] 
+      (f ((n f) x)))))
+
+This representation is known as Church numerals, after its inventor, Alonzo
+Church, the logician who invented the lambda-calculus.
+
+Deﬁne one and two directly (not in terms of zero and add-1).
+(Hint: Use substitution to evaluate (add-1 zero)). 
+
+Give a direct deﬁnition of the addition procedure + 
+(not in terms of repeated application of add-1).
+
+(add-1 zero)
+
+(fn [f] (fn [x] (f ((zero f) x))))
+
+(fn [f] (fn [x] (f ((fn [f*] (fn [x*] x*)) f) x))))
+
+(fn [f] (fn [x] (f ((fn [x*] x*) x))))
+
+(fn [f] (fn [x] (f x)))
+
+; one
+
+(def one
+  (fn [f]
+    (fn [x]
+      (f x))))
+
+; I think two should be something like
+
+(def two
+  (fn [f]
+    (fn [x]
+      (f (f x)))))
+
+; let's verify
+
+(add-1 one)
+
+(fn [f] (fn [x] (f ((one f) x))))
+
+(fn [f] (fn [x] (f ((fn [f*] (fn [x*] (f* x*))) f) x))))
+
+(fn [f] (fn [x] (f ((fn [x*] (f x*)) x))))
+
+(fn [f] (fn [x] (f (f x))))
+
+; QED
+
+(def plus [a b]
+  (fn [f]
+    (fn [x]
+      ((b f) ((a f) x)))))
+
+; testing...
+
+(plus two two)
+
+(fn [f] (fn [x] ((two f) ((two f) x))))
+
+(fn [f] (fn [x] ((two f) (((fn [f*] (fn [x*] (f* (f* x*)))) f) x))))
+
+(fn [f] (fn [x] ((two f) ((fn [x*] (f (f x*))) x))))
+
+(fn [f] (fn [x] ((two f) (f (f x)))))
+
+(fn [f] (fn [x] (((fn [f*] (fn [x*] (f* (f* x*)))) f) (f (f x)))))
+
+(fn [f] (fn [x] ((fn [x*] (f (f x*))) (f (f x)))))
+
+(fn [f] (fn [x] (f (f (f (f x))))))
+
+; this should work

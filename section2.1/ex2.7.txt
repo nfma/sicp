@@ -1,0 +1,13 @@
+Alyssa’s program is incomplete because she has not speciﬁed the implementation
+of the interval abstraction. Here is a deﬁnition of the interval constructor:
+
+(defn make-interval [a b]
+  [a b])
+
+Deﬁne selectors upper-bound and lower-bound to complete the implementation.
+
+(defn lower-bound [i]
+  (first i))
+
+(defn upper-bound [i]
+  (second i))

@@ -1,0 +1,62 @@
+The width of an interval is half of the difference between its upper and lower
+bounds. The width is a measure of the uncertainty of the number speciﬁed by the
+interval. For some arithmetic operations the width of the result of combining
+two intervals is a function only of the widths of the argument intervals, 
+whereas for others the width of the combination is not a function of the widths
+of the argument intervals. Show that the width of the sum (or difference) of
+two intervals is a function only of the widths of the intervals being added 
+(or subtracted).
+
+Give examples to show that this is not true for multiplication or division.
+
+(defn width [i]
+  (/ (- (upper-bound i) (lower-bound i)) 2))
+
+(defn width-sum [x y]
+  (+ (width x) (width y)))
+
+(defn width-sub [x y]
+  (+ (width x) (width y)))
+
+; tests
+
+(width (make-interval 1 2))
+1/2
+
+(width (make-interval 4 5))
+1/2
+
+(width (add-interval (make-interval 1 2) (make-interval 4 5)))
+1
+
+(width-sum (width (make-interval 1 2)) (width (make-interval 4 5)))
+1
+
+(width (sub-interval (make-interval 1 2) (make-interval 4 5)))
+1
+
+(width-sub (width (make-interval 1 2)) (width (make-interval 4 5)))
+1
+
+; proof that multiplication and division widths can't be calculated only
+; as a function of widths
+; if we can check that the same widths are used but the calculation returns
+; different values, then we know that it must not be just a function of the
+; widths
+
+(width (mul-interval (make-interval 1 2) (make-interval 4 5)))
+3
+
+(width (mul-interval (make-interval 1 2) (make-interval 11 12)))
+13/2
+
+(width (div-interval (make-interval 1 2) (make-interval 4 5)))
+7/20
+
+(width (div-interval (make-interval 1 2) (make-interval 5 6)))
+13/60
+
+; the same widths were used for all intervals but the final width is 
+; always different
+;
+; QED

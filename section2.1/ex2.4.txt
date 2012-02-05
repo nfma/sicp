@@ -1,0 +1,16 @@
+Here is an alternative procedural representation of pairs. For this 
+representation, verify that (car (cons x y)) yields x for any objects x and y.
+
+(defn cons* [x y]
+  #(% x y))
+
+(defn car* [z]
+  (z (fn [p _] p)))
+
+What is the corresponding deﬁnition of cdr? 
+(Hint: To verify that this works, make use of the substitution model of Section 1.1.5.)
+
+(defn cdr* [z]
+  (z (fn [_ q] q)))
+
+; I just run this at the repl and it works

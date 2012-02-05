@@ -1,0 +1,26 @@
+Show that under the assumption of small percentage tolerances there is a simple
+formula for the approximate percentage tolerance of the product of two
+intervals in terms of the tolerances of the factors. You may simplify the
+problem by assuming that all numbers are positive.
+ 
+; I got lazy on this one and googled the solution
+
+a = (ca-wa, ca+wa) 
+b = (cb-wb, cb+wb) 
+
+where:
+wa << ca and wb << cb
+and all interval bounds are > 0 
+and tolerance = w/c
+
+x = a * b
+x = ((ca-wa)(cb-wb), (ca+wa)(cb+wb))
+x = (ca.cb-ca.wb-cb.wa+wa.wb, ca.cb+ca.wb+cb.wa+wa.wb)
+wa.wb is very small in comparison to other factors
+x_approx = (ca.cb-ca.wb-cb.wa, ca.cb+ca.wb+cb.wa)
+x_approx = (ca.cb-(ca.wb+cb.wa), ca.cb+(ca.wb+cb.wa))
+tolerance = (ca.wb + cb.wa)/ca.cb
+tolerance = (wa/ca) + (wb/cb)
+tolerance = tolerance a + tolerance b
+
+; credit to: http://www.kendyck.com/archives/2007/10/24/solution-to-sicp-exercise-213/#comment-113060

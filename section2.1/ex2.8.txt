@@ -1,0 +1,20 @@
+Using reasoning analogous to Alyssa’s, describe how the difference of two
+intervals may be computed. 
+Deﬁne a corresponding subtraction procedure, called sub-interval.
+
+let's see:
+
+5 - 3 = 2 ; both with .5 tolerance
+
+[4.5 5.5] - [2.5 3.5] ; this should return [1 3] to maximise the interval
+
+so:
+
+[a1 a1] - [b1 b2] must be [a1-b2 a1-b1]
+
+and:
+
+(defn sub-interval [x y]
+  (make-interval
+    (- (lower-bound x) (upper-bound y))
+    (- (upper-bound x) (lower-bound y))))

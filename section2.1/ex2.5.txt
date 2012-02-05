@@ -1,0 +1,19 @@
+Show that we can represent pairs of nonnegative integers using only numbers and
+arithmetic operations if we represent the pair a and b as the integer that is
+the product 2^a3^b.
+Give the corresponding deﬁnitions of the procedures cons, car, and cdr.
+
+(defn cons** [x y]
+  #(% (* (long (Math/pow 2 x)) (long (Math/pow 3 y)))))
+
+(defn- p [n i res]
+  (if (or (zero? n)
+        (not (zero? (rem n i)))) 
+    res
+    (recur (/ n i) i (inc res))))
+
+(defn car** [z]
+  (z #(p % 2 0)))
+
+(defn cdr** [z]
+  (z #(p % 3 0)))
