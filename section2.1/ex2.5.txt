@@ -4,7 +4,7 @@ the product 2^a3^b.
 Give the corresponding deﬁnitions of the procedures cons, car, and cdr.
 
 (defn cons** [x y]
-  #(% (* (long (Math/pow 2 x)) (long (Math/pow 3 y)))))
+  #(% (* (.pow (biginteger 2) x) (.pow (biginteger 3) y))))
 
 (defn- p [n i res]
   (if (or (zero? n)

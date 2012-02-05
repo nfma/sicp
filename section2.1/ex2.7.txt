@@ -6,8 +6,8 @@ of the interval abstraction. Here is a deﬁnition of the interval constructor:
 
 Deﬁne selectors upper-bound and lower-bound to complete the implementation.
 
-(defn lower-bound [i]
-  (first i))
+(defn lower-bound [[s e]]
+  s)
 
-(defn upper-bound [i]
-  (second i))
+(defn upper-bound [[s e]]
+  e)

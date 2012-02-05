@@ -12,27 +12,30 @@ coordinates of the endpoints). To try your procedures, you’ll need a way to
 print points:
 
 (defn print-point [p]
-  (println  (str "(" (x-point p) "," (y-point p) ")")))
+  (println  "(" (x-point p) "," (y-point p) ")"))
 
 (defn mk-point [s e]
   [s e])
 
-(defn x-point [p]
-  (first p))
+(defn x-point [[s e]]
+  s)
 
-(defn y-point [p]
-  (second p))
+(defn y-point [[s e]]
+  e)
 
 (defn mk-seg [p1 p2]
   [p1 p2])
 
-(defn start-seg [s]
-  (first s))
+(defn start-seg [[s e]]
+  s)
 
-(defn end-seg [s]
-  (second s))
+(defn end-seg [[s e]]
+  e)
 
 (defn seg-midpoint [s]
-  (let [dx (- (x-point (end-seg s)) (x-point (start-seg s)))
-        dy (- (y-point (end-seg s)) (y-point (start-seg s)))]
-    (mk-point (+ (x-point (start-seg s)) (/ dx 2)) (+ (y-point (start-seg s)) (/ dy 2)))))
+  (let [x (start-seg s)
+        y (end-seg s)
+        dx (- (x-point y) (x-point x))
+        dy (- (y-point y) (y-point x))]
+    (mk-point (+ (x-point x) (/ dx 2)) 
+              (+ (y-point x) (/ dy 2)))))
