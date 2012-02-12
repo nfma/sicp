@@ -25,7 +25,7 @@ Fill in the missing expressions in the following procedures for computing the
 other matrix operations. (The procedure accumulate-n is deﬁned in Exercise 2.36.)
 
 (defn matrix-*-vector [m v]
-  (map #(dot-product % v) m))
+  (map (partial dot-product v) m))
 
 (defn transpose [mat]
   (lazy-seq
@@ -33,4 +33,4 @@ other matrix operations. (The procedure accumulate-n is deﬁned in Exercise 2.3
 
 (defn matrix-*-matrix [m n]
   (let [cols (transpose n)]
-    (map #(matrix-*-vector cols %) m)))
+    (map (partial matrix-*-vector cols) m)))

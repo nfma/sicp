@@ -40,8 +40,10 @@ weight of a mobile.
         f #(if (sequential? %)
              (total-weight %)
              %)]
-    (+ (f (branch-structure left))
-       (f (branch-structure right)))))
+    (+ (* (branch-length left)
+          (f (branch-structure left)))
+       (* (branch-length right)
+          (f (branch-structure right))))))
 
 c. A mobile is said to be balanced if the torque applied by its topleft branch
 is equal to that applied by its top-right branch (that is, if the length of the
@@ -58,12 +60,14 @@ mobile is balanced.
              (cal-balance %)
              %)
         ls (f (branch-structure left))
-        rs (f (branch-structure right))]
+        rs (f (branch-structure right))
+        lw (* ls (branch-length left))
+        rw (* rs (branch-length right))]
     (cond 
       (= (or ls rs) -1)
         -1
-      (= ls rs)
-        (+ ls rs)
+      (= lw rw)
+        (+ lw rw)
       :else
         -1)))
 

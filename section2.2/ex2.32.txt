@@ -8,5 +8,7 @@ explanation of why it works:
 (defn subsets [s]
   (if (seq s)
     (let [r (subsets (rest s))]
-      (concat r (map #(cons (first s) %) r)))
+      (concat r (map (partial cons (first s)) r)))
     (list '())))
+
+(subsets '(1 2 3))
