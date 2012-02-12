@@ -1,0 +1,12 @@
+Abstract your answer to Exercise 2.30 to produce a procedure tree-map with the
+property that square-tree could be deﬁned as
+
+(defn square-tree [tree]
+  (tree-map square tree))
+
+(defn tree-map [f t]
+  (letfn [(aux [x]
+            (if (sequential? x) 
+              (tree-map f x)
+              (f x)))]
+    (map aux t)))

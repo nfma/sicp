@@ -1,0 +1,7 @@
+Redeﬁne count-leaves from Section 2.2.2 as an accumulation:
+
+(defn count-leaves [t]
+  (reduce + 0 (map #(if (sequential? %)
+                      (count-leaves %)
+                      1)
+                   t)))

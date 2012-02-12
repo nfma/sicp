@@ -1,0 +1,30 @@
+Louis Reasoner tries to rewrite the ﬁrst square-list procedure of Exercise 2.21
+so that it evolves an iterative process:
+
+(defn square-list [items]
+  (letfn [(iter [things answer]
+            (if (null? things)
+              answer
+            (recur (rest things)
+                   (cons (square (first things)) answer))))]
+    (iter items nil)))
+
+Unfortunately, deﬁning square-list this way produces the answer list in the
+reverse order of the one desired. Why?
+
+Because we are consing into the list we already have.
+
+Louis then tries to ﬁx his bug by interchanging the arguments to cons:
+
+(defn square-list [items]
+  (letfn [(iter [things answer]
+            (if (null? things)
+              answer
+            (recur (rest things)
+                   (cons answer (square (first things))))))]
+    (iter items nil)))
+
+This doesn’t work either. Explain.
+
+That puts the results on the right order but nests the result this way: 
+(((((1) 4) 9) 16) 25)

@@ -1,0 +1,12 @@
+Deﬁne a procedure last-pair that returns the list that contains only the last
+element of a given (nonempty) list:
+
+(last-pair (list 23 72 149 34))
+(34)
+
+(defn last-pair [xs]
+  (letfn [(find [x xs]
+            (if (empty? xs)
+              x
+              (recur (first xs) (rest xs))))]
+    (list (find (first xs) (rest xs)))))

@@ -1,0 +1,86 @@
+A binary mobile consists of two branches, a left branch and a right branch.
+Each branch is a rod of a certain length, from which hangs either a weight or
+another binary mobile. We can represent a binary mobile using compound data by
+constructing it from two branches (for example, using list): 
+
+(defn make-mobile [left right]
+  (list left right))
+
+A branch is constructed from a length (which must be a number) together with a
+structure, which may be either a number (representing a simple weight) or
+another mobile:
+
+(defn make-branch [length structure]
+  (list length structure))
+
+a. Write the corresponding selectors left-branch and right-branch, which return
+the branches of a mobile, and branch-length and branch-structure, which return
+the components of a branch.
+
+(defn left-branch [[l _]]
+  l)
+
+(defn right-branch [[_ r]]
+  r)
+
+(defn branch-length [[l _]]
+  l)
+
+(defn branch-structure [[_ s]]
+  s)
+
+b. Using your selectors, deﬁne a procedure total-weight that returns the total
+weight of a mobile.
+
+; I know that there're better algorithms for this, but as I've used one with
+; some kind of a stack before, this one will be recursive
+(defn total-weight [mobile]
+  (let [left (left-branch mobile)
+        right (right-branch mobile)
+        f #(if (sequential? %)
+             (total-weight %)
+             %)]
+    (+ (f (branch-structure left))
+       (f (branch-structure right)))))
+
+c. A mobile is said to be balanced if the torque applied by its topleft branch
+is equal to that applied by its top-right branch (that is, if the length of the
+left rod multiplied by the weight hanging from that rod is equal to the
+corresponding product for the right side) and if each of the submobiles hanging
+off its branches is balanced. Design a predicate that tests whether a binary
+mobile is balanced.
+
+; recursive algorithms are, IMO, easier to code
+(defn- cal-balance [mobile]
+  (let [left (left-branch mobile)
+        right (right-branch mobile)
+        f #(if (sequential? %)
+             (cal-balance %)
+             %)
+        ls (f (branch-structure left))
+        rs (f (branch-structure right))]
+    (cond 
+      (= (or ls rs) -1)
+        -1
+      (= ls rs)
+        (+ ls rs)
+      :else
+        -1)))
+
+(defn balanced? [mobile]
+  (not= -1 (cal-balance mobile)))
+
+d. Suppose we change the representation of mobiles so that the constructors are
+
+(defn make-mobile [left right]
+  (cons left right))
+
+(defn make-branch [length structure]
+  (cons length structure))
+
+How much do you need to change your programs to convert to
+the new representation?
+
+This doesn't actually work in clojure because you can't cons into something 
+that is not an ISeq, while this actually works in Scheme RsR5.
+But if we substituted lists for vectors, it would work without any change.

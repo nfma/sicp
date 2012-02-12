@@ -1,0 +1,13 @@
+Fill in the missing expressions to complete the following deﬁnitions of some
+basic list-manipulation operations as accumulations:
+
+(defn map* [p sequence]
+  (lazy-seq
+    (reduce #(conj %1 (p %2)) [] sequence)))
+
+(defn append [seq1 seq2]
+  (lazy-seq
+    (reduce conj (vec seq1) seq2)))
+
+(defn length [sequence]
+  (reduce (fn [r _] (inc r)) 0 sequence))

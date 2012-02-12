@@ -1,0 +1,27 @@
+Write a procedure fringe that takes as argument a tree (represented as a list)
+and returns a list whose elements are all the leaves of the tree arranged in
+left-to-right order. For example,
+
+(def x (list (list 1 2) (list 3 4)))
+
+(fringe x)
+(1 2 3 4)
+
+(fringe (list x x))
+(1 2 3 4 1 2 3 4)
+
+; this is the same as the function flatten; but way slower because flatten uses tree-seq which walks the tree and returns the nodes
+; but mine flattens maps too, eheheheh
+(defn fringe [xs]
+  (lazy-seq
+    (letfn [(f [xs more res]
+              (cond
+                (not (or xs (seq more)))
+                  res
+                (isa? (.getClass xs) clojure.lang.Seqable)
+                  (if (seq xs)
+                    (recur (first xs) (cons (rest xs) more) res)
+                    (recur (first more) (rest more) res))
+                :else
+                  (recur (first more) (rest more) (conj res xs))))]
+      (f (first xs) (rest xs) []))))

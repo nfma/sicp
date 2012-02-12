@@ -1,0 +1,10 @@
+Complete the following deﬁnitions of reverse (Exercise 2.18) in terms of
+fold-right and fold-left from Exercise 2.38:
+
+(defn reverse [sequence]
+  (lazy-seq 
+    (fold-right #(conj %2 %1) [] sequence)))
+
+(defn reverse [sequence]
+  (lazy-seq
+    (fold-left #(conj %1 %2) '() sequence)))

@@ -1,0 +1,36 @@
+Suppose we represent vectors v = (vi) as sequences of numbers, and matrices 
+m = (mij) as sequences of vectors (the rows of the matrix). For example, the 
+matrix
+ 
+[[1 2 3 4]
+ [4 5 6 6]
+ [6 7 8 9]]
+
+is represented as the sequence ((1 2 3 4) (4 5 6 6) (6 7 8 9)). With this
+representation, we can use sequence operations to concisely express the basic 
+matrix and vector operations. These operations (which are described in any book
+on matrix algebra) are the following:
+
+(dot-product v w) returns the sum Si vi wi
+(matrix-*-vector m v) returns the vector t, where ti = Sj mij vj
+(matrix-*-matrix m n) returns the matrix p, where pij = Sk mik nkj
+(transpose m) returns the matrix n, where nij = mji
+
+We can deﬁne the dot product as
+
+(defn dot-product [v w]
+  (reduce + 0 (map * v w)))
+
+Fill in the missing expressions in the following procedures for computing the
+other matrix operations. (The procedure accumulate-n is deﬁned in Exercise 2.36.)
+
+(defn matrix-*-vector [m v]
+  (map #(dot-product % v) m))
+
+(defn transpose [mat]
+  (lazy-seq
+    (reduce-n #(conj %1 %2) [] mat)))
+
+(defn matrix-*-matrix [m n]
+  (let [cols (transpose n)]
+    (map #(matrix-*-vector cols %) m)))
