@@ -1,0 +1,35 @@
+Louis Reasoner is having a terrible time doing Exercise 2.42. His queens
+procedure seems to work, but it runs extremely slowly. (Louis never does manage
+to wait long enough for it to solve even the 6 x 6 case.) When Louis asks Eva
+Lu Ator for help, she points out that he has interchanged the order of the
+nested mappings in the flatmap, writing it as
+
+(mapcat
+  #(map (partial adjoin-position % k) (queen-cols (- k 1)))
+  (range 1 (inc board-size)))
+
+Explain why this interchange makes the program run slowly.  Estimate how long it 
+will take Louis’s program to solve the eight-queens puzzle, assuming that the
+program in Exercise 2.42 solves the puzzle in time T .
+
+(defn adjoin-position [row k rest-of-queens]
+  (if rest-of-queens
+    (conj rest-of-queens [row k])
+    [[row k]]))
+
+(defn queens [board-size]
+  (letfn [(queen-cols [k]
+            (if (zero? k)
+              (list empty-board)
+              (filter
+                (partial safe? k)
+                (mapcat
+                  #(map (partial adjoin-position % k) (queen-cols (- k 1)))
+                  (range 1 (inc board-size))))))]
+    (queen-cols board-size)))
+
+; I run out of memory on the (queens 7)
+; in this case for each column we are generating the problem for the all the queen
+; problems before many times ex: (queens 7) generates (queens 6) which generates 
+; (queens 5) and each of this two generates (queens 5) (queens 4) plus (queens 5)
+; from the first and so on...

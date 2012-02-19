@@ -1,0 +1,25 @@
+Write a procedure to ﬁnd all ordered triples of distinct positive integers i,
+j, and k less than or equal to a given integer n that sum to a given integer s.
+
+(defn sort-triples [xs]
+  (let [c (proxy [java.util.Comparator] []
+            (compare [x y]
+              (cond 
+                (< (first x) (first y)) -1
+                (> (first x) (first y)) 1
+                (= (first x) (first y))
+                  (if (and (seq (rest x)) (seq (rest y)))
+                    (.compare this (rest x) (rest y))
+                    0))))]
+    (sort c xs)))
+
+(defn unique-triples [n s]
+  (sort-triples
+    (filter #(= (apply + %) s)
+            (mapcat 
+              (fn [y] 
+                (mapcat 
+                  (fn [x] 
+                    (map #(list % x y) (range 1 x)))
+                  (range 1 y)))
+              (range 1 (inc n))))))

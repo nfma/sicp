@@ -1,0 +1,24 @@
+Deﬁne a procedure unique-pairs that, given an integer n, generates the
+sequence of pairs (i, j) with 1 <= j < i <= n.  Use unique-pairs to simplify
+the deﬁnition of prime-sum-pairs given above.
+
+(defn unique-pairs [n]
+  (mapcat (fn [x] (map #(list % x) (range 1 x))) (range 1 (inc n))))
+
+(defn prime-sum? [[s e]]
+  (prime? (+ s e)))
+
+(defn make-pair-sum [[s e]]
+  (list s e (+ s e)))
+
+(defn prime-sum-pairs [n]
+  (->> n
+       unique-pairs
+       (filter prime-sum?)
+       (map make-pair-sum)))
+
+; another way
+(defn prime-sum-pairs [n]
+  ((comp (partial map make-pair-sum) 
+         (partial filter prime-sum?) 
+         unique-pairs) n))
